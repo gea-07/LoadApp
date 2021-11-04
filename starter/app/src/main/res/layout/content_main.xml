@@ -9,14 +9,60 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <ImageView
+        android:id="@+id/imageview_download"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:src="@drawable/ic_baseline_cloud_download_24"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radio_load_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageview_download">
+
+        <RadioButton
+            android:id="@+id/glide_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_radio_download_list_height"
+            android:text="@string/glide_text" />
+
+        <RadioButton
+            android:id="@+id/udacity_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_radio_download_list_height"
+            android:text="@string/udacity_text" />
+
+        <RadioButton
+            android:id="@+id/retrofit_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_radio_download_list_height"
+            android:text="@string/retrofit_text" />
+    </RadioGroup>
+
+
     <com.udacity.LoadingButton
         android:id="@+id/custom_button"
         android:layout_width="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="60dp"
-        android:layout_margin="20dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="120dp"
+        app:textColor="#6127B5"
+        app:arcColor="#6200ea"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radio_load_group"
+        app:layout_constraintVertical_bias="0.865" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
