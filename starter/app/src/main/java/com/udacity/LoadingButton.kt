@@ -17,6 +17,7 @@ class LoadingButton @JvmOverloads constructor(
     private val loadingRectangle = Rect()
     private var loadingProgress = 0
     private var textColor = 0
+    private var textBackgroundColor = 0
     private var arcColor = 0
 
     private var valueAnimator = ValueAnimator()
@@ -53,13 +54,13 @@ class LoadingButton @JvmOverloads constructor(
         isClickable = true
         context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
             textColor = getColor(R.styleable.LoadingButton_textColor, 0)
+            textBackgroundColor = getColor(R.styleable.LoadingButton_textBackgroundColor, 0)
             arcColor = getColor(R.styleable.LoadingButton_arcColor, 0)
         }
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        paint.color = resources.getColor(R.color.colorPrimary)
 
         // get the canvas size
         val canvasRect = Rect()
@@ -67,7 +68,8 @@ class LoadingButton @JvmOverloads constructor(
         val canvasHeight = canvasRect.height()
         val canvasWidth = canvasRect.width()
 
-        // Draw the rectnagle and label that says "Download"
+        // Draw the rectangle and label that says "Download"
+        paint.color = textBackgroundColor
         canvas?.drawRect(canvasRect, paint)
         paint.color = textColor
         val label = resources.getString(R.string.download_string)
@@ -76,7 +78,7 @@ class LoadingButton @JvmOverloads constructor(
 
         if (buttonState == ButtonState.Loading) {
             // Draw the underlying original rectangle
-            paint.color = resources.getColor(R.color.colorPrimary)
+            paint.color = textBackgroundColor
             canvas?.drawRect(canvasRect, paint)
 
             // Draw the darker animated rectangle using value animator over the original rect

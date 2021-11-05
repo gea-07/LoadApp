@@ -18,6 +18,11 @@
     <string name="choose_message">Please select one of the options above to start the download.</string>
     <string name="we_are_loading">We are loading</string>
     <string name="load_app_channel_id">load_app_channel</string>
-    <string name="load_app_channel_name">Resource Download</string>
-    <string name="load_app_channel_message">Resource download completed</string>
+    <string name="load_app_channel_name">GIT Repository Download</string>
+    <string name="load_app_channel_message">The GIT repository has been downloaded</string>
+    <string name="check_detail">Check out the Detail</string>
+    <string name="download_successful">Success</string>
+    <string name="download_failed">Fail</string>
+    <string name="label_filename">File name:</string>
+    <string name="label_download_status">Status:</string>
 </resources>

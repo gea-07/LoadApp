@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -22,10 +21,10 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-
 class MainActivity : AppCompatActivity() {
 
     private var downloadID: Long = 0
+    var urlStringID: Int = 0
 
     private lateinit var notificationManager: NotificationManager
     private lateinit var pendingIntent: PendingIntent
@@ -58,26 +57,59 @@ class MainActivity : AppCompatActivity() {
                 Log.d("DOWNLOAD", "Download is done!")
                 custom_button.buttonState = ButtonState.Completed
 
-                // notify the user that the download is complete
+                // Find out the status of the download
+                var statusString: String = ""
+                val query = DownloadManager.Query().setFilterById(id)
+                val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                val cursor = downloadManager.query(query)
+                if (cursor.moveToFirst()) {
+                    val status = cursor.getInt(cursor.getColumnIndex(
+                        DownloadManager.COLUMN_STATUS
+                    ))
+                    when (status) {
+                        DownloadManager.STATUS_SUCCESSFUL ->
+                            statusString = getString(R.string.download_successful)
+                        DownloadManager.STATUS_FAILED ->
+                            statusString = getString(R.string.download_failed)
+                    }
+                }
+
+                // Notify the user that the download is complete using notification
                 val notificationManager = ContextCompat.getSystemService(
                     application,
                     NotificationManager::class.java
                 ) as NotificationManager
                 notificationManager.sendNotification(
-                    application.getString(R.string.load_app_channel_message),
+                    getString(urlStringID),
+                    statusString,
                     application)
+
+                // In addition, notify the user using toast
+                Toast.makeText(applicationContext,
+                    getString(R.string.load_app_channel_message),
+                    Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
 
     private fun download() {
-        // Figure out which URL was selected by the user
         var url: String=""
+        // Figure out which URL was selected by the user
         val loadAppGroup = findViewById<RadioGroup>(R.id.radio_load_group)
         when(loadAppGroup.checkedRadioButtonId) {
-            R.id.glide_button -> url = GLIDE_URL
-            R.id.udacity_button -> url = UDACITY_URL
-            R.id.retrofit_button -> url = RETROFIT_URL
+            R.id.glide_button -> {
+                url = GLIDE_URL
+                urlStringID = R.string.glide_text
+            }
+            R.id.udacity_button -> {
+                url = UDACITY_URL
+                urlStringID = R.string.udacity_text
+            }
+            R.id.retrofit_button -> {
+                url = RETROFIT_URL
+                urlStringID = R.string.retrofit_text
+            }
         }
         // If the user forgot to select a URL, notify them with a toast message
         if (url.isEmpty()) {
@@ -88,7 +120,15 @@ class MainActivity : AppCompatActivity() {
             return
         } else { // Start downloading the resource
             Log.d("DOWNLOAD", url)
+            // Cancel any previous notifications before starting a new download
+            val notificationManager = ContextCompat.getSystemService(
+                application,
+                NotificationManager::class.java
+            ) as NotificationManager
+            notificationManager.cancelNotifications()
+            // Set the custom button's state to loading to start animation of this button
             custom_button.buttonState = ButtonState.Loading
+            // Create the download request
             val request = DownloadManager.Request(Uri.parse(url))
                 .setTitle(getString(R.string.app_name))
                 .setDescription(getString(R.string.app_description))
@@ -107,7 +147,7 @@ class MainActivity : AppCompatActivity() {
             val notificationChannel = NotificationChannel(
                 channelId,
                 channelName,
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.RED
