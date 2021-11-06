@@ -5,13 +5,11 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.toBitmap
 
 private val NOTIFICATION_ID = 0
-private val FLAGS = 0
 const val URL_KEY = "com.udacity.url"
 const val DOWNLOAD_STATUS_KEY = "com.udacity.downloadStatus"
 
@@ -40,7 +38,7 @@ fun NotificationManager.sendNotification(messageBody: String, status: String,
         applicationContext,
         NOTIFICATION_ID,
         detailIntent,
-        FLAGS
+        PendingIntent.FLAG_UPDATE_CURRENT
     )
 
     // Add style
@@ -57,14 +55,14 @@ fun NotificationManager.sendNotification(messageBody: String, status: String,
         .setSmallIcon(R.drawable.ic_baseline_cloud_download_24)
         .setContentTitle(applicationContext.getString(R.string.notification_title))
         .setContentText(applicationContext.getString(R.string.load_app_channel_message))
-        .setContentIntent(contentPendingIntent)
+        .setContentIntent(detailPendingIntent)
         .setAutoCancel(true)
         .setStyle(bigPicStyle)
         .setLargeIcon(bitmap)
         .addAction(
             R.drawable.ic_baseline_cloud_download_24,
-            applicationContext.getString(R.string.check_detail),
-            detailPendingIntent
+            applicationContext.getString(R.string.back_to_main),
+            contentPendingIntent
         )
 
     notify(NOTIFICATION_ID, builder.build())
