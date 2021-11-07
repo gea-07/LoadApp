@@ -55,14 +55,14 @@ fun NotificationManager.sendNotification(messageBody: String, status: String,
         .setSmallIcon(R.drawable.ic_baseline_cloud_download_24)
         .setContentTitle(applicationContext.getString(R.string.notification_title))
         .setContentText(applicationContext.getString(R.string.load_app_channel_message))
-        .setContentIntent(detailPendingIntent)
+        .setContentIntent(contentPendingIntent)
         .setAutoCancel(true)
         .setStyle(bigPicStyle)
         .setLargeIcon(bitmap)
         .addAction(
             R.drawable.ic_baseline_cloud_download_24,
-            applicationContext.getString(R.string.back_to_main),
-            contentPendingIntent
+            applicationContext.getString(R.string.open_detail),
+            detailPendingIntent
         )
 
     notify(NOTIFICATION_ID, builder.build())

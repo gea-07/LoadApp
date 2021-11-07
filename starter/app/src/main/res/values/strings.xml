@@ -20,7 +20,7 @@
     <string name="load_app_channel_id">load_app_channel</string>
     <string name="load_app_channel_name">GIT Repository Download</string>
     <string name="load_app_channel_message">The GIT repository has been downloaded</string>
-    <string name="back_to_main">Back to Main</string>
+    <string name="open_detail">Check out the Detail</string>
     <string name="download_successful">Success</string>
     <string name="download_failed">Fail</string>
     <string name="label_filename">File name:</string>
